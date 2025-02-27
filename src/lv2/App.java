@@ -7,7 +7,7 @@ import java.util.List;
 
 public class App {
 
-    // 상수로 문자열 관리 (추가 개선 사항)
+    // 상수로 문자열 관리
     private static final String EXIT_COMMAND = "exit";
     private static final List<String> OPERATOR_LIST = new ArrayList<>(Arrays.asList("+", "-", "*", "/"));
     private static final List<String> YN_LIST = new ArrayList<>(Arrays.asList("Y", "N", "y", "n"));
@@ -16,10 +16,11 @@ public class App {
         Calculator calculator = new Calculator();
 
         try (BufferedReader br = new BufferedReader(new InputStreamReader(System.in))) {
-            String exitStr = "";
             System.out.println("계산기를 시작합니다.");
+            System.out.println("계산기는 exit 입력 시 종료됩니다.");
 
-            while (!exitStr.equalsIgnoreCase(EXIT_COMMAND)) {
+
+            while (true) {
                 try {
                     int num1 = getPositiveInteger(br, "첫번째 양의 정수를 입력해주세요 : ");
                     int num2 = getPositiveInteger(br, "두번째 양의 정수를 입력해주세요 : ");
@@ -39,15 +40,13 @@ public class App {
                     }
 
                     String removeYn = getYesNoInput(br, "기존 저장된 결과 값을 삭제하시겠습니까? (Y/N) : ");
-
                     if (removeYn.equalsIgnoreCase("Y")) {
                         while (true) {
                             System.out.print("삭제할 결과 번호를 입력하세요 : ");
-                            int index = Integer.parseInt(br.readLine().trim());
-
+                            int index = Integer.parseInt(readInput(br));
                             int resultSize = calculator.getResultList().size();
 
-                            if (0 >= index || index > resultSize) {
+                            if (index <= 0 || index > resultSize) {
                                 System.out.println("\n! 올바른 결과 번호를 입력해주세요 !\n");
                                 continue;
                             }
@@ -57,12 +56,14 @@ public class App {
                         }
                     }
 
-                    System.out.print("더 계산하시겠습니까? (exit 입력 시 종료) : ");
-                    exitStr = br.readLine().trim();
+                    String continueYn = getYesNoInput(br, "계속 계산하시겠습니까? (Y/N) : ");
+                    if (continueYn.equalsIgnoreCase("N")) {
+                        break;
+                    }
 
                     System.out.println(); // 개행 처리
                 } catch (NumberFormatException e) {
-                    System.out.println("\n! 정수를 입력해주세요 \n!");
+                    System.out.println("\n! 정수를 입력해주세요 !\n");
                 } catch (IllegalArgumentException e) {
                     System.out.println("\n! 올바른 사칙연산 기호를 입력해주세요 !\n");
                 } catch (ArithmeticException e) {
@@ -75,13 +76,24 @@ public class App {
         }
     }
 
-    // 양의 정수를 입력받는 메서드
+    // 입력을 읽고, exit 입력 시 프로그램 종료
+    private static String readInput(BufferedReader br) throws IOException {
+        String input = br.readLine().trim();
+        if (input.equalsIgnoreCase(EXIT_COMMAND)) {
+            System.out.println("계산기가 종료되었습니다.");
+            System.exit(0);
+        }
+        return input;
+    }
+
+    // 양의 정수를 입력받는 메서드 (exit 입력 가능)
     private static int getPositiveInteger(BufferedReader br, String prompt) throws IOException {
         int number = -1;
         while (number < 0) {
             System.out.print(prompt);
+            String input = readInput(br);
             try {
-                number = Integer.parseInt(br.readLine().trim());
+                number = Integer.parseInt(input);
                 if (number < 0) {
                     System.out.println("\n! 양의 정수를 입력해주세요 !\n");
                 }
@@ -92,22 +104,22 @@ public class App {
         return number;
     }
 
-    // 올바른 사칙연산 기호를 입력받는 메서드
+    // 올바른 사칙연산 기호를 입력받는 메서드 (exit 입력 가능)
     private static String getValidOperator(BufferedReader br) throws IOException {
         String operator = "";
         while (!OPERATOR_LIST.contains(operator)) {
             System.out.print("사칙연산 기호를 입력하세요(+, -, *, /) : ");
-            operator = br.readLine().trim();
+            operator = readInput(br);
         }
         return operator;
     }
 
-    // Y/N 입력을 받는 메서드
+    // Y/N 입력을 받는 메서드 (exit 입력 가능)
     private static String getYesNoInput(BufferedReader br, String prompt) throws IOException {
         String input = "";
         while (!YN_LIST.contains(input)) {
             System.out.print(prompt);
-            input = br.readLine().trim();
+            input = readInput(br);
         }
         return input;
     }
