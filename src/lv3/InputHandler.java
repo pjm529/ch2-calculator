@@ -57,7 +57,7 @@ public class InputHandler<T extends Number> {
     // Y/N 입력받기
     public boolean isYes(String prompt) throws IOException {
         String input = "";
-        while(input != null && "".equalsIgnoreCase(input)) {
+        while(!"Y".equalsIgnoreCase(input) && !"N".equalsIgnoreCase(input)) {
             System.out.print(prompt);
             input = this.readInput();
         }
