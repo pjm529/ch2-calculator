@@ -2,8 +2,6 @@ package lv3;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Function;
 
 public class InputHandler<T extends Number> {
