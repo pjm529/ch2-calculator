@@ -29,8 +29,8 @@ public class CalculatorController<T extends Number & Comparable<T>> {
 
                 // 계산
                 calculator.calculate(num1, num2, operator);
-                T result = calculator.getResult();
-                System.out.printf("%s %s %s = %s \n", num1, operator, num2, result);
+                Result<T> result = calculator.getResult();
+                System.out.println(result.toString());
 
                 String resultYn = inputHandler.getYesNoInput("기존 저장된 결과 값들을 보시겠습니까? (Y/N) : ");
                 if (resultYn.equalsIgnoreCase("Y")) {

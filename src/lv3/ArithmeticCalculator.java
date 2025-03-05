@@ -42,9 +42,9 @@ public class ArithmeticCalculator<T extends Number & Comparable<T>> {
     }
 
     // 가장 최근 계산 결과를 반환
-    public T getResult() {
+    public Result<T> getResult() {
         if (!resultList.isEmpty()) {
-            return resultList.get(resultList.size() - 1).getResult();
+            return resultList.get(resultList.size() - 1);
         }
         return null;
     }
