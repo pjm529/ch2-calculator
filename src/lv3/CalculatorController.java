@@ -39,18 +39,21 @@ public class CalculatorController<T extends Number & Comparable<T>> {
                     }
                 }
 
-                if (inputHandler.isYes("기존 저장된 결과 값을 삭제하시겠습니까? (Y/N) : ")) {
-                    while (true) {
-                        System.out.print("삭제할 결과 번호를 입력하세요 : ");
-                        int index = Integer.parseInt(inputHandler.readInput());
-                        int resultSize = calculator.getResultList().size();
-                        if (index <= 0 || index > resultSize) {
-                            System.out.println("\n! 올바른 결과 번호를 입력해주세요 !\n");
-                            continue;
+                int resultListSize = calculator.getResultListSize();
+                if (resultListSize > 0) {
+                    if (inputHandler.isYes("기존 저장된 결과 값을 삭제하시겠습니까? (Y/N) : ")) {
+                        while (true) {
+                            System.out.print("삭제할 결과 번호를 입력하세요 : ");
+                            int index = Integer.valueOf(inputHandler.readInput());
+
+                            if (!calculator.removeResult(index)) {
+                                System.out.println("\n! 올바른 결과 번호를 입력해주세요 !\n");
+                                continue;
+                            }
+
+                            System.out.println("결과 값 삭제가 완료되었습니다.");
+                            break;
                         }
-                        calculator.removeResult(index);
-                        System.out.println("결과 값 삭제가 완료되었습니다.");
-                        break;
                     }
                 }
 

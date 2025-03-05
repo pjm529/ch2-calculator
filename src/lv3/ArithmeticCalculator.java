@@ -43,9 +43,20 @@ public class ArithmeticCalculator<T extends Number & Comparable<T>> {
         return resultList;
     }
 
+    public int getResultListSize() {
+        return resultList.size();
+    }
+
     // 사용자에게는 1부터 시작하는 번호로 결과를 삭제
-    public void removeResult(int index) {
+    public boolean removeResult(int index) {
+        int resultListSize = this.getResultListSize();
+
+        if (index <= 0 || index > resultListSize) {
+            return false;
+        }
+
         resultList.remove(index - 1);
+        return true;
     }
 
     public List<Result<T>> getSearchList(T searchValue) {
