@@ -10,7 +10,6 @@ public class InputHandler<T extends Number> {
 
     private static final String EXIT_COMMAND = "exit";
     private static final List<String> OPERATOR_LIST = Arrays.asList("+", "-", "*", "/");
-    private static final List<String> YN_LIST = Arrays.asList("Y", "N", "y", "n");
 
     private final BufferedReader br;
     private final Function<String, T> converter;
@@ -56,12 +55,18 @@ public class InputHandler<T extends Number> {
     }
 
     // Y/N 입력받기
-    public String getYesNoInput(String prompt) throws IOException {
+    public boolean isYes(String prompt) throws IOException {
         String input = "";
-        while (!YN_LIST.contains(input)) {
+        while(input != null && "".equalsIgnoreCase(input)) {
             System.out.print(prompt);
-            input = readInput();
+            input = this.readInput();
         }
-        return input;
+
+        if ("Y".equalsIgnoreCase(input)) {
+            return true;
+        }
+
+        return false;
     }
+
 }

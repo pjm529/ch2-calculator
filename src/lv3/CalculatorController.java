@@ -32,16 +32,14 @@ public class CalculatorController<T extends Number & Comparable<T>> {
                 Result<T> result = calculator.getResult();
                 System.out.println(result.toString());
 
-                String resultYn = inputHandler.getYesNoInput("기존 저장된 결과 값들을 보시겠습니까? (Y/N) : ");
-                if (resultYn.equalsIgnoreCase("Y")) {
+                if (inputHandler.isYes("기존 저장된 결과 값들을 보시겠습니까? (Y/N) : ")) {
                     int i = 1;
                     for (Result<T> res : calculator.getResultList()) {
                         System.out.println(i++ + ". " + res.toString());
                     }
                 }
 
-                String removeYn = inputHandler.getYesNoInput("기존 저장된 결과 값을 삭제하시겠습니까? (Y/N) : ");
-                if (removeYn.equalsIgnoreCase("Y")) {
+                if (inputHandler.isYes("기존 저장된 결과 값을 삭제하시겠습니까? (Y/N) : ")) {
                     while (true) {
                         System.out.print("삭제할 결과 번호를 입력하세요 : ");
                         int index = Integer.parseInt(inputHandler.readInput());
@@ -56,11 +54,9 @@ public class CalculatorController<T extends Number & Comparable<T>> {
                     }
                 }
 
-                String continueYn = inputHandler.getYesNoInput("계속 계산하시겠습니까? (Y/N) : ");
-                if (continueYn.equalsIgnoreCase("N")) {
+                if (!inputHandler.isYes("계속 계산하시겠습니까? (Y/N) : ")) {
 
-                    String searchYn = inputHandler.getYesNoInput("\n계산 결과 중 입력 받은 값 보다 큰 결과를 검색하시겠습니까? (Y/N) : ");
-                    if (searchYn.equalsIgnoreCase("Y")) {
+                    if (inputHandler.isYes("\n계산 결과 중 입력 받은 값 보다 큰 결과를 검색하시겠습니까? (Y/N) : ")) {
                         T searchValue = inputHandler.getValidNumber("검색할 숫자를 입력해주세요 : ");
                         List<Result<T>> resultList = calculator.getSearchList(searchValue);
 
