@@ -25,10 +25,10 @@ public class CalculatorController<T extends Number & Comparable<T>> {
             try {
                 T num1 = inputHandler.getValidNumber("첫번째 숫자를 입력해주세요 : ");
                 T num2 = inputHandler.getValidNumber("두번째 숫자를 입력해주세요 : ");
-                String operator = inputHandler.getValidOperator("사칙연산 기호를 입력하세요(+, -, *, /) : ");
+                OperatorType operatorType = inputHandler.getValidOperator("사칙연산 기호를 입력하세요(+, -, *, /) : ");
 
                 // 계산
-                calculator.calculate(num1, num2, operator);
+                calculator.calculate(num1, num2, operatorType);
                 Result<T> result = calculator.getResult();
                 System.out.println(result.toString());
 

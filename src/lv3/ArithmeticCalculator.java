@@ -17,17 +17,7 @@ public class ArithmeticCalculator<T extends Number & Comparable<T>> {
     /**
      * 두 피연산자와 연산자 기호를 받아 계산 후, 결과를 Result 객체로 저장.
      */
-    public void calculate(T num1, T num2, String operator) {
-        OperatorType opType = null;
-
-        // 입력 받은 사칙연산 기호를 토대로 OperatorType 찾기
-        for (OperatorType op : OperatorType.values()) {
-            if (op.getOperator().equals(operator)) {
-                opType = op;
-                break;
-            }
-        }
-
+    public void calculate(T num1, T num2, OperatorType opType) {
         // 사칙연산 기호에 맞는 OperatorType 이 없을 경우 Exception
         if (opType == null) {
             throw new IllegalArgumentException("\n! 올바른 사칙연산 기호를 입력해주세요 !\n");

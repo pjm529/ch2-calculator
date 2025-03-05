@@ -9,8 +9,6 @@ import java.util.function.Function;
 public class InputHandler<T extends Number> {
 
     private static final String EXIT_COMMAND = "exit";
-    private static final List<String> OPERATOR_LIST = Arrays.asList("+", "-", "*", "/");
-
     private final BufferedReader br;
     private final Function<String, T> converter;
 
@@ -45,13 +43,14 @@ public class InputHandler<T extends Number> {
     }
 
     // 올바른 사칙연산 기호 입력받기
-    public String getValidOperator(String prompt) throws IOException {
-        String operator = "";
-        while (!OPERATOR_LIST.contains(operator)) {
+    public OperatorType getValidOperator(String prompt) throws IOException {
+        OperatorType op = null;
+        while(op == null) {
             System.out.print(prompt);
-            operator = readInput();
+            op = OperatorType.findByOperator(this.readInput());
         }
-        return operator;
+
+        return op;
     }
 
     // Y/N 입력받기
