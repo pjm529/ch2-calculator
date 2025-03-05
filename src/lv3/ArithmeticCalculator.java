@@ -17,17 +17,7 @@ public class ArithmeticCalculator<T extends Number & Comparable<T>> {
     /**
      * 두 피연산자와 연산자 기호를 받아 계산 후, 결과를 Result 객체로 저장.
      */
-    public void calculate(T num1, T num2, String operator) {
-        OperatorType opType = null;
-
-        // 입력 받은 사칙연산 기호를 토대로 OperatorType 찾기
-        for (OperatorType op : OperatorType.values()) {
-            if (op.getOperator().equals(operator)) {
-                opType = op;
-                break;
-            }
-        }
-
+    public void calculate(T num1, T num2, OperatorType opType) {
         // 사칙연산 기호에 맞는 OperatorType 이 없을 경우 Exception
         if (opType == null) {
             throw new IllegalArgumentException("\n! 올바른 사칙연산 기호를 입력해주세요 !\n");
@@ -42,9 +32,9 @@ public class ArithmeticCalculator<T extends Number & Comparable<T>> {
     }
 
     // 가장 최근 계산 결과를 반환
-    public T getResult() {
+    public Result<T> getResult() {
         if (!resultList.isEmpty()) {
-            return resultList.get(resultList.size() - 1).getResult();
+            return resultList.get(resultList.size() - 1);
         }
         return null;
     }
@@ -53,9 +43,20 @@ public class ArithmeticCalculator<T extends Number & Comparable<T>> {
         return resultList;
     }
 
+    public int getResultListSize() {
+        return resultList.size();
+    }
+
     // 사용자에게는 1부터 시작하는 번호로 결과를 삭제
-    public void removeResult(int index) {
+    public boolean removeResult(int index) {
+        int resultListSize = this.getResultListSize();
+
+        if (index <= 0 || index > resultListSize) {
+            return false;
+        }
+
         resultList.remove(index - 1);
+        return true;
     }
 
     public List<Result<T>> getSearchList(T searchValue) {

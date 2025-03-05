@@ -16,6 +16,16 @@ public enum OperatorType {
         return operator;
     }
 
+    public static OperatorType findByOperator(String operator) {
+        for (OperatorType op : OperatorType.values()) {
+            if (op.getOperator().equalsIgnoreCase(operator)) {
+                return op;
+            }
+        }
+
+        return null;
+    }
+
     // 제네릭 메서드를 통해 NumberOperator 를 활용하여 연산 수행
     public <T extends Number> T apply(T num1, T num2, NumberOperator<T> op) {
 

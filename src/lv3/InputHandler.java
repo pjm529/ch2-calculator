@@ -2,16 +2,11 @@ package lv3;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.util.Arrays;
-import java.util.List;
 import java.util.function.Function;
 
 public class InputHandler<T extends Number> {
 
     private static final String EXIT_COMMAND = "exit";
-    private static final List<String> OPERATOR_LIST = Arrays.asList("+", "-", "*", "/");
-    private static final List<String> YN_LIST = Arrays.asList("Y", "N", "y", "n");
-
     private final BufferedReader br;
     private final Function<String, T> converter;
 
@@ -46,22 +41,29 @@ public class InputHandler<T extends Number> {
     }
 
     // 올바른 사칙연산 기호 입력받기
-    public String getValidOperator(String prompt) throws IOException {
-        String operator = "";
-        while (!OPERATOR_LIST.contains(operator)) {
+    public OperatorType getValidOperator(String prompt) throws IOException {
+        OperatorType op = null;
+        while(op == null) {
             System.out.print(prompt);
-            operator = readInput();
+            op = OperatorType.findByOperator(this.readInput());
         }
-        return operator;
+
+        return op;
     }
 
     // Y/N 입력받기
-    public String getYesNoInput(String prompt) throws IOException {
+    public boolean isYes(String prompt) throws IOException {
         String input = "";
-        while (!YN_LIST.contains(input)) {
+        while(!"Y".equalsIgnoreCase(input) && !"N".equalsIgnoreCase(input)) {
             System.out.print(prompt);
-            input = readInput();
+            input = this.readInput();
         }
-        return input;
+
+        if ("Y".equalsIgnoreCase(input)) {
+            return true;
+        }
+
+        return false;
     }
+
 }

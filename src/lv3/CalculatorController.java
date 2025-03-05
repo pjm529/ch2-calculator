@@ -25,42 +25,41 @@ public class CalculatorController<T extends Number & Comparable<T>> {
             try {
                 T num1 = inputHandler.getValidNumber("첫번째 숫자를 입력해주세요 : ");
                 T num2 = inputHandler.getValidNumber("두번째 숫자를 입력해주세요 : ");
-                String operator = inputHandler.getValidOperator("사칙연산 기호를 입력하세요(+, -, *, /) : ");
+                OperatorType operatorType = inputHandler.getValidOperator("사칙연산 기호를 입력하세요(+, -, *, /) : ");
 
                 // 계산
-                calculator.calculate(num1, num2, operator);
-                T result = calculator.getResult();
-                System.out.printf("%s %s %s = %s \n", num1, operator, num2, result);
+                calculator.calculate(num1, num2, operatorType);
+                Result<T> result = calculator.getResult();
+                System.out.println(result.toString());
 
-                String resultYn = inputHandler.getYesNoInput("기존 저장된 결과 값들을 보시겠습니까? (Y/N) : ");
-                if (resultYn.equalsIgnoreCase("Y")) {
+                if (inputHandler.isYes("기존 저장된 결과 값들을 보시겠습니까? (Y/N) : ")) {
                     int i = 1;
                     for (Result<T> res : calculator.getResultList()) {
                         System.out.println(i++ + ". " + res.toString());
                     }
                 }
 
-                String removeYn = inputHandler.getYesNoInput("기존 저장된 결과 값을 삭제하시겠습니까? (Y/N) : ");
-                if (removeYn.equalsIgnoreCase("Y")) {
-                    while (true) {
-                        System.out.print("삭제할 결과 번호를 입력하세요 : ");
-                        int index = Integer.parseInt(inputHandler.readInput());
-                        int resultSize = calculator.getResultList().size();
-                        if (index <= 0 || index > resultSize) {
-                            System.out.println("\n! 올바른 결과 번호를 입력해주세요 !\n");
-                            continue;
+                int resultListSize = calculator.getResultListSize();
+                if (resultListSize > 0) {
+                    if (inputHandler.isYes("기존 저장된 결과 값을 삭제하시겠습니까? (Y/N) : ")) {
+                        while (true) {
+                            System.out.print("삭제할 결과 번호를 입력하세요 : ");
+                            int index = Integer.valueOf(inputHandler.readInput());
+
+                            if (!calculator.removeResult(index)) {
+                                System.out.println("\n! 올바른 결과 번호를 입력해주세요 !\n");
+                                continue;
+                            }
+
+                            System.out.println("결과 값 삭제가 완료되었습니다.");
+                            break;
                         }
-                        calculator.removeResult(index);
-                        System.out.println("결과 값 삭제가 완료되었습니다.");
-                        break;
                     }
                 }
 
-                String continueYn = inputHandler.getYesNoInput("계속 계산하시겠습니까? (Y/N) : ");
-                if (continueYn.equalsIgnoreCase("N")) {
+                if (!inputHandler.isYes("계속 계산하시겠습니까? (Y/N) : ")) {
 
-                    String searchYn = inputHandler.getYesNoInput("\n계산 결과 중 입력 받은 값 보다 큰 결과를 검색하시겠습니까? (Y/N) : ");
-                    if (searchYn.equalsIgnoreCase("Y")) {
+                    if (inputHandler.isYes("\n계산 결과 중 입력 받은 값 보다 큰 결과를 검색하시겠습니까? (Y/N) : ")) {
                         T searchValue = inputHandler.getValidNumber("검색할 숫자를 입력해주세요 : ");
                         List<Result<T>> resultList = calculator.getSearchList(searchValue);
 
